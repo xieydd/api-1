@@ -12,6 +12,8 @@ import (
 	fakeensurancev1alpha1 "github.com/gocrane/api/pkg/generated/clientset/versioned/typed/ensurance/v1alpha1/fake"
 	predictionv1alpha1 "github.com/gocrane/api/pkg/generated/clientset/versioned/typed/prediction/v1alpha1"
 	fakepredictionv1alpha1 "github.com/gocrane/api/pkg/generated/clientset/versioned/typed/prediction/v1alpha1/fake"
+	schedulingv1alpha1 "github.com/gocrane/api/pkg/generated/clientset/versioned/typed/scheduling/v1alpha1"
+	fakeschedulingv1alpha1 "github.com/gocrane/api/pkg/generated/clientset/versioned/typed/scheduling/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -87,4 +89,9 @@ func (c *Clientset) EnsuranceV1alpha1() ensurancev1alpha1.EnsuranceV1alpha1Inter
 // PredictionV1alpha1 retrieves the PredictionV1alpha1Client
 func (c *Clientset) PredictionV1alpha1() predictionv1alpha1.PredictionV1alpha1Interface {
 	return &fakepredictionv1alpha1.FakePredictionV1alpha1{Fake: &c.Fake}
+}
+
+// SchedulingV1alpha1 retrieves the SchedulingV1alpha1Client
+func (c *Clientset) SchedulingV1alpha1() schedulingv1alpha1.SchedulingV1alpha1Interface {
+	return &fakeschedulingv1alpha1.FakeSchedulingV1alpha1{Fake: &c.Fake}
 }
