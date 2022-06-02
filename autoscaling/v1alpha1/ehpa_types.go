@@ -12,7 +12,7 @@ import (
 	_ "k8s.io/metrics/pkg/apis/metrics"
 	_ "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 
-	predictionapi "github.com/gocrane/api/prediction/v1alpha1"
+	predictionapi "git.woa.com/crane/api/prediction/v1alpha1"
 )
 
 type ScaleStrategy string

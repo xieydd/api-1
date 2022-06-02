@@ -17,23 +17,23 @@ CODEGEN_PKG=${CODEGEN_PKG:-$(
 )}
 
 bash "${CODEGEN_PKG}"/generate-groups.sh "client,lister,informer" \
-  github.com/gocrane/api/pkg/generated \
-  github.com/gocrane/api \
+  git.woa.com/crane/api/pkg/generated \
+  git.woa.com/crane/api \
   "autoscaling:v1alpha1 ensurance:v1alpha1 prediction:v1alpha1 analysis:v1alpha1 scheduling:v1alpha1" \
   --output-base "$SCRIPT_ROOT" \
   --go-header-file "${SCRIPT_ROOT}/hack/boilerplate/boilerplate.go.txt" \
   --plural-exceptions "Analytics:Analytics"
 
 bash "${CODEGEN_PKG}"/generate-groups.sh "deepcopy" \
-  github.com/gocrane/api/pkg/generated \
-  github.com/gocrane/api \
+  git.woa.com/crane/api/pkg/generated \
+  git.woa.com/crane/api \
   "autoscaling:v1alpha1 ensurance:v1alpha1 prediction:v1alpha1 analysis:v1alpha1 scheduling:v1alpha1" \
   --output-base "$SCRIPT_ROOT" \
   --go-header-file "${SCRIPT_ROOT}/hack/boilerplate/boilerplate.go.txt"
 
-cp -r $SCRIPT_ROOT/github.com/gocrane/api/* $SCRIPT_ROOT
+cp -r $SCRIPT_ROOT/git.woa.com/crane/api/* $SCRIPT_ROOT
 
-rm -rf $SCRIPT_ROOT/github.com
+rm -rf $SCRIPT_ROOT/git.woa.com
 
 KUBE_OPENAPI_PKG=`go list -mod=readonly -m -f '{{.Dir}}' k8s.io/kube-openapi`
 

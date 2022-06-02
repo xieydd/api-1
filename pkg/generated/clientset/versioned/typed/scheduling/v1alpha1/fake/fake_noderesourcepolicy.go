@@ -5,7 +5,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/gocrane/api/scheduling/v1alpha1"
+	v1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -17,7 +17,6 @@ import (
 // FakeNodeResourcePolicies implements NodeResourcePolicyInterface
 type FakeNodeResourcePolicies struct {
 	Fake *FakeSchedulingV1alpha1
-	ns   string
 }
 
 var noderesourcepoliciesResource = schema.GroupVersionResource{Group: "scheduling.crane.io", Version: "v1alpha1", Resource: "noderesourcepolicies"}
@@ -27,8 +26,7 @@ var noderesourcepoliciesKind = schema.GroupVersionKind{Group: "scheduling.crane.
 // Get takes name of the nodeResourcePolicy, and returns the corresponding nodeResourcePolicy object, and an error if there is any.
 func (c *FakeNodeResourcePolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NodeResourcePolicy, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(noderesourcepoliciesResource, c.ns, name), &v1alpha1.NodeResourcePolicy{})
-
+		Invokes(testing.NewRootGetAction(noderesourcepoliciesResource, name), &v1alpha1.NodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}
@@ -38,8 +36,7 @@ func (c *FakeNodeResourcePolicies) Get(ctx context.Context, name string, options
 // List takes label and field selectors, and returns the list of NodeResourcePolicies that match those selectors.
 func (c *FakeNodeResourcePolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.NodeResourcePolicyList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(noderesourcepoliciesResource, noderesourcepoliciesKind, c.ns, opts), &v1alpha1.NodeResourcePolicyList{})
-
+		Invokes(testing.NewRootListAction(noderesourcepoliciesResource, noderesourcepoliciesKind, opts), &v1alpha1.NodeResourcePolicyList{})
 	if obj == nil {
 		return nil, err
 	}
@@ -60,15 +57,13 @@ func (c *FakeNodeResourcePolicies) List(ctx context.Context, opts v1.ListOptions
 // Watch returns a watch.Interface that watches the requested nodeResourcePolicies.
 func (c *FakeNodeResourcePolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(noderesourcepoliciesResource, c.ns, opts))
-
+		InvokesWatch(testing.NewRootWatchAction(noderesourcepoliciesResource, opts))
 }
 
 // Create takes the representation of a nodeResourcePolicy and creates it.  Returns the server's representation of the nodeResourcePolicy, and an error, if there is any.
 func (c *FakeNodeResourcePolicies) Create(ctx context.Context, nodeResourcePolicy *v1alpha1.NodeResourcePolicy, opts v1.CreateOptions) (result *v1alpha1.NodeResourcePolicy, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(noderesourcepoliciesResource, c.ns, nodeResourcePolicy), &v1alpha1.NodeResourcePolicy{})
-
+		Invokes(testing.NewRootCreateAction(noderesourcepoliciesResource, nodeResourcePolicy), &v1alpha1.NodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}
@@ -78,8 +73,7 @@ func (c *FakeNodeResourcePolicies) Create(ctx context.Context, nodeResourcePolic
 // Update takes the representation of a nodeResourcePolicy and updates it. Returns the server's representation of the nodeResourcePolicy, and an error, if there is any.
 func (c *FakeNodeResourcePolicies) Update(ctx context.Context, nodeResourcePolicy *v1alpha1.NodeResourcePolicy, opts v1.UpdateOptions) (result *v1alpha1.NodeResourcePolicy, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(noderesourcepoliciesResource, c.ns, nodeResourcePolicy), &v1alpha1.NodeResourcePolicy{})
-
+		Invokes(testing.NewRootUpdateAction(noderesourcepoliciesResource, nodeResourcePolicy), &v1alpha1.NodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}
@@ -90,8 +84,7 @@ func (c *FakeNodeResourcePolicies) Update(ctx context.Context, nodeResourcePolic
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
 func (c *FakeNodeResourcePolicies) UpdateStatus(ctx context.Context, nodeResourcePolicy *v1alpha1.NodeResourcePolicy, opts v1.UpdateOptions) (*v1alpha1.NodeResourcePolicy, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(noderesourcepoliciesResource, "status", c.ns, nodeResourcePolicy), &v1alpha1.NodeResourcePolicy{})
-
+		Invokes(testing.NewRootUpdateSubresourceAction(noderesourcepoliciesResource, "status", nodeResourcePolicy), &v1alpha1.NodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}
@@ -101,14 +94,13 @@ func (c *FakeNodeResourcePolicies) UpdateStatus(ctx context.Context, nodeResourc
 // Delete takes name of the nodeResourcePolicy and deletes it. Returns an error if one occurs.
 func (c *FakeNodeResourcePolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(noderesourcepoliciesResource, c.ns, name), &v1alpha1.NodeResourcePolicy{})
-
+		Invokes(testing.NewRootDeleteAction(noderesourcepoliciesResource, name), &v1alpha1.NodeResourcePolicy{})
 	return err
 }
 
 // DeleteCollection deletes a collection of objects.
 func (c *FakeNodeResourcePolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(noderesourcepoliciesResource, c.ns, listOpts)
+	action := testing.NewRootDeleteCollectionAction(noderesourcepoliciesResource, listOpts)
 
 	_, err := c.Fake.Invokes(action, &v1alpha1.NodeResourcePolicyList{})
 	return err
@@ -117,8 +109,7 @@ func (c *FakeNodeResourcePolicies) DeleteCollection(ctx context.Context, opts v1
 // Patch applies the patch and returns the patched nodeResourcePolicy.
 func (c *FakeNodeResourcePolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NodeResourcePolicy, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(noderesourcepoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.NodeResourcePolicy{})
-
+		Invokes(testing.NewRootPatchSubresourceAction(noderesourcepoliciesResource, name, pt, data, subresources...), &v1alpha1.NodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}

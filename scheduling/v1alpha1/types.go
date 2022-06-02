@@ -8,7 +8,9 @@ import (
 
 const (
 	AnnotationPrefixSchedulingExpansion = "expansion.scheduling.crane.io"
-	AnnotationPrefixSchedulingBalance = "balance.scheduling.crane.io"
+	AnnotationPrefixSchedulingBalanceLoad = "load.balance.scheduling.crane.io"
+	AnnotationPrefixSchedulingBalanceTarget = "target.balance.scheduling.crane.io"
+
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -21,10 +23,11 @@ type ClusterNodeResourcePolicyList struct {
 }
 
 // +genclient
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:object:root=true
+// +genclient:nonNamespaced
 // +kubebuilder:resource:scope=Cluster,shortName=cnrp
 // +kubebuilder:subresource:status
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 // ClusterNodeResourcePolicy must be created in crane root namespace
 type ClusterNodeResourcePolicy struct {
 	metav1.TypeMeta   `json:",inline"`
@@ -76,6 +79,7 @@ type NodeResourcePolicyTemplate struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 // NodeResourcePolicyList is a list of NodeResourcePolicy resources
 type NodeResourcePolicyList struct {
 	metav1.TypeMeta `json:",inline"`
@@ -85,8 +89,7 @@ type NodeResourcePolicyList struct {
 }
 
 // +genclient
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:object:root=true
+// +genclient:nonNamespaced
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,shortName=nrp
 // +kubebuilder:printcolumn:name="Name",type="string",JSONPath=".metadata.name",description="The name of the nrp."
@@ -94,6 +97,8 @@ type NodeResourcePolicyList struct {
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp",description="CreationTimestamp is a timestamp representing the server time when this object was created."
 // +kubebuilder:webhooks:path=/mutate-noderesourcepolicy,mutating=true,failurePolicy=fail,groups=scheduling.crane.io,resources=noderesourcepolicy,verbs=create;update,versions=v1alpha1,name=noderesourcepolicys.webhook.scheduling.crane.io,sideEffects=none,admissionReviewVersions=v1
 // +kubebuilder:webhooks:verbs=create;update,path=/validate-noderesourcepolicy,mutating=false,failurePolicy=fail,groups=scheduling.crane.io,resources=noderesourcepolicy,versions=v1,name=noderesourcepolicys.webhook.scheduling.crane.io,sideEffects=none,admissionReviewVersions=v1
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
 // NodeResourcePolicy
 type NodeResourcePolicy struct {
 	metav1.TypeMeta   `json:",inline"`
@@ -190,6 +195,7 @@ type CraneSchedulerConfiguration struct {
 	Spec CraneSchedulerConfigurationSpec `json:"spec,omitempty"`
 }
 
+// ScheduleApplyScope is a global config, use a crd is not suitable, use configmap instead. so now it will be not used.
 type CraneSchedulerConfigurationSpec struct {
 	// ScheduleApplyScope
 	// +optional

@@ -6,8 +6,8 @@ import (
 	"context"
 	"time"
 
-	scheme "github.com/gocrane/api/pkg/generated/clientset/versioned/scheme"
-	v1alpha1 "github.com/gocrane/api/scheduling/v1alpha1"
+	scheme "git.woa.com/crane/api/pkg/generated/clientset/versioned/scheme"
+	v1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
@@ -17,7 +17,7 @@ import (
 // NodeResourcePoliciesGetter has a method to return a NodeResourcePolicyInterface.
 // A group's client should implement this interface.
 type NodeResourcePoliciesGetter interface {
-	NodeResourcePolicies(namespace string) NodeResourcePolicyInterface
+	NodeResourcePolicies() NodeResourcePolicyInterface
 }
 
 // NodeResourcePolicyInterface has methods to work with NodeResourcePolicy resources.
@@ -37,14 +37,12 @@ type NodeResourcePolicyInterface interface {
 // nodeResourcePolicies implements NodeResourcePolicyInterface
 type nodeResourcePolicies struct {
 	client rest.Interface
-	ns     string
 }
 
 // newNodeResourcePolicies returns a NodeResourcePolicies
-func newNodeResourcePolicies(c *SchedulingV1alpha1Client, namespace string) *nodeResourcePolicies {
+func newNodeResourcePolicies(c *SchedulingV1alpha1Client) *nodeResourcePolicies {
 	return &nodeResourcePolicies{
 		client: c.RESTClient(),
-		ns:     namespace,
 	}
 }
 
@@ -52,7 +50,6 @@ func newNodeResourcePolicies(c *SchedulingV1alpha1Client, namespace string) *nod
 func (c *nodeResourcePolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NodeResourcePolicy, err error) {
 	result = &v1alpha1.NodeResourcePolicy{}
 	err = c.client.Get().
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		Name(name).
 		VersionedParams(&options, scheme.ParameterCodec).
@@ -69,7 +66,6 @@ func (c *nodeResourcePolicies) List(ctx context.Context, opts v1.ListOptions) (r
 	}
 	result = &v1alpha1.NodeResourcePolicyList{}
 	err = c.client.Get().
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
@@ -86,7 +82,6 @@ func (c *nodeResourcePolicies) Watch(ctx context.Context, opts v1.ListOptions) (
 	}
 	opts.Watch = true
 	return c.client.Get().
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
@@ -97,7 +92,6 @@ func (c *nodeResourcePolicies) Watch(ctx context.Context, opts v1.ListOptions) (
 func (c *nodeResourcePolicies) Create(ctx context.Context, nodeResourcePolicy *v1alpha1.NodeResourcePolicy, opts v1.CreateOptions) (result *v1alpha1.NodeResourcePolicy, err error) {
 	result = &v1alpha1.NodeResourcePolicy{}
 	err = c.client.Post().
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(nodeResourcePolicy).
@@ -110,7 +104,6 @@ func (c *nodeResourcePolicies) Create(ctx context.Context, nodeResourcePolicy *v
 func (c *nodeResourcePolicies) Update(ctx context.Context, nodeResourcePolicy *v1alpha1.NodeResourcePolicy, opts v1.UpdateOptions) (result *v1alpha1.NodeResourcePolicy, err error) {
 	result = &v1alpha1.NodeResourcePolicy{}
 	err = c.client.Put().
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		Name(nodeResourcePolicy.Name).
 		VersionedParams(&opts, scheme.ParameterCodec).
@@ -125,7 +118,6 @@ func (c *nodeResourcePolicies) Update(ctx context.Context, nodeResourcePolicy *v
 func (c *nodeResourcePolicies) UpdateStatus(ctx context.Context, nodeResourcePolicy *v1alpha1.NodeResourcePolicy, opts v1.UpdateOptions) (result *v1alpha1.NodeResourcePolicy, err error) {
 	result = &v1alpha1.NodeResourcePolicy{}
 	err = c.client.Put().
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		Name(nodeResourcePolicy.Name).
 		SubResource("status").
@@ -139,7 +131,6 @@ func (c *nodeResourcePolicies) UpdateStatus(ctx context.Context, nodeResourcePol
 // Delete takes name of the nodeResourcePolicy and deletes it. Returns an error if one occurs.
 func (c *nodeResourcePolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	return c.client.Delete().
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		Name(name).
 		Body(&opts).
@@ -154,7 +145,6 @@ func (c *nodeResourcePolicies) DeleteCollection(ctx context.Context, opts v1.Del
 		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
 	}
 	return c.client.Delete().
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		VersionedParams(&listOpts, scheme.ParameterCodec).
 		Timeout(timeout).
@@ -167,7 +157,6 @@ func (c *nodeResourcePolicies) DeleteCollection(ctx context.Context, opts v1.Del
 func (c *nodeResourcePolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.NodeResourcePolicy, err error) {
 	result = &v1alpha1.NodeResourcePolicy{}
 	err = c.client.Patch(pt).
-		Namespace(c.ns).
 		Resource("noderesourcepolicies").
 		Name(name).
 		SubResource(subresources...).

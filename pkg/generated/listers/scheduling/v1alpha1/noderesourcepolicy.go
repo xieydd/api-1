@@ -3,7 +3,7 @@
 package v1alpha1
 
 import (
-	v1alpha1 "github.com/gocrane/api/scheduling/v1alpha1"
+	v1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/tools/cache"
@@ -15,8 +15,9 @@ type NodeResourcePolicyLister interface {
 	// List lists all NodeResourcePolicies in the indexer.
 	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1alpha1.NodeResourcePolicy, err error)
-	// NodeResourcePolicies returns an object that can list and get NodeResourcePolicies.
-	NodeResourcePolicies(namespace string) NodeResourcePolicyNamespaceLister
+	// Get retrieves the NodeResourcePolicy from the index for a given name.
+	// Objects returned here must be treated as read-only.
+	Get(name string) (*v1alpha1.NodeResourcePolicy, error)
 	NodeResourcePolicyListerExpansion
 }
 
@@ -38,41 +39,9 @@ func (s *nodeResourcePolicyLister) List(selector labels.Selector) (ret []*v1alph
 	return ret, err
 }
 
-// NodeResourcePolicies returns an object that can list and get NodeResourcePolicies.
-func (s *nodeResourcePolicyLister) NodeResourcePolicies(namespace string) NodeResourcePolicyNamespaceLister {
-	return nodeResourcePolicyNamespaceLister{indexer: s.indexer, namespace: namespace}
-}
-
-// NodeResourcePolicyNamespaceLister helps list and get NodeResourcePolicies.
-// All objects returned here must be treated as read-only.
-type NodeResourcePolicyNamespaceLister interface {
-	// List lists all NodeResourcePolicies in the indexer for a given namespace.
-	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.NodeResourcePolicy, err error)
-	// Get retrieves the NodeResourcePolicy from the indexer for a given namespace and name.
-	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1alpha1.NodeResourcePolicy, error)
-	NodeResourcePolicyNamespaceListerExpansion
-}
-
-// nodeResourcePolicyNamespaceLister implements the NodeResourcePolicyNamespaceLister
-// interface.
-type nodeResourcePolicyNamespaceLister struct {
-	indexer   cache.Indexer
-	namespace string
-}
-
-// List lists all NodeResourcePolicies in the indexer for a given namespace.
-func (s nodeResourcePolicyNamespaceLister) List(selector labels.Selector) (ret []*v1alpha1.NodeResourcePolicy, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1alpha1.NodeResourcePolicy))
-	})
-	return ret, err
-}
-
-// Get retrieves the NodeResourcePolicy from the indexer for a given namespace and name.
-func (s nodeResourcePolicyNamespaceLister) Get(name string) (*v1alpha1.NodeResourcePolicy, error) {
-	obj, exists, err := s.indexer.GetByKey(s.namespace + "/" + name)
+// Get retrieves the NodeResourcePolicy from the index for a given name.
+func (s *nodeResourcePolicyLister) Get(name string) (*v1alpha1.NodeResourcePolicy, error) {
+	obj, exists, err := s.indexer.GetByKey(name)
 	if err != nil {
 		return nil, err
 	}

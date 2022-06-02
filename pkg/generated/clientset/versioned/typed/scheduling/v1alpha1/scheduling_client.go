@@ -3,8 +3,8 @@
 package v1alpha1
 
 import (
-	"github.com/gocrane/api/pkg/generated/clientset/versioned/scheme"
-	v1alpha1 "github.com/gocrane/api/scheduling/v1alpha1"
+	"git.woa.com/crane/api/pkg/generated/clientset/versioned/scheme"
+	v1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	rest "k8s.io/client-go/rest"
 )
 
@@ -19,12 +19,12 @@ type SchedulingV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *SchedulingV1alpha1Client) ClusterNodeResourcePolicies(namespace string) ClusterNodeResourcePolicyInterface {
-	return newClusterNodeResourcePolicies(c, namespace)
+func (c *SchedulingV1alpha1Client) ClusterNodeResourcePolicies() ClusterNodeResourcePolicyInterface {
+	return newClusterNodeResourcePolicies(c)
 }
 
-func (c *SchedulingV1alpha1Client) NodeResourcePolicies(namespace string) NodeResourcePolicyInterface {
-	return newNodeResourcePolicies(c, namespace)
+func (c *SchedulingV1alpha1Client) NodeResourcePolicies() NodeResourcePolicyInterface {
+	return newNodeResourcePolicies(c)
 }
 
 // NewForConfig creates a new SchedulingV1alpha1Client for the given config.

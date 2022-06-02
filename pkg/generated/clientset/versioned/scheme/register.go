@@ -3,11 +3,11 @@
 package scheme
 
 import (
-	analysisv1alpha1 "github.com/gocrane/api/analysis/v1alpha1"
-	autoscalingv1alpha1 "github.com/gocrane/api/autoscaling/v1alpha1"
-	ensurancev1alpha1 "github.com/gocrane/api/ensurance/v1alpha1"
-	predictionv1alpha1 "github.com/gocrane/api/prediction/v1alpha1"
-	schedulingv1alpha1 "github.com/gocrane/api/scheduling/v1alpha1"
+	analysisv1alpha1 "git.woa.com/crane/api/analysis/v1alpha1"
+	autoscalingv1alpha1 "git.woa.com/crane/api/autoscaling/v1alpha1"
+	ensurancev1alpha1 "git.woa.com/crane/api/ensurance/v1alpha1"
+	predictionv1alpha1 "git.woa.com/crane/api/prediction/v1alpha1"
+	schedulingv1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

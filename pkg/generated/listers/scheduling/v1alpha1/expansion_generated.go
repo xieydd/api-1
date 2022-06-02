@@ -6,14 +6,6 @@ package v1alpha1
 // ClusterNodeResourcePolicyLister.
 type ClusterNodeResourcePolicyListerExpansion interface{}
 
-// ClusterNodeResourcePolicyNamespaceListerExpansion allows custom methods to be added to
-// ClusterNodeResourcePolicyNamespaceLister.
-type ClusterNodeResourcePolicyNamespaceListerExpansion interface{}
-
 // NodeResourcePolicyListerExpansion allows custom methods to be added to
 // NodeResourcePolicyLister.
 type NodeResourcePolicyListerExpansion interface{}
-
-// NodeResourcePolicyNamespaceListerExpansion allows custom methods to be added to
-// NodeResourcePolicyNamespaceLister.
-type NodeResourcePolicyNamespaceListerExpansion interface{}

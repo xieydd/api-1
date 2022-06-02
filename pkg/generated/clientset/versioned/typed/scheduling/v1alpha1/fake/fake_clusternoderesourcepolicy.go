@@ -5,7 +5,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/gocrane/api/scheduling/v1alpha1"
+	v1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -17,7 +17,6 @@ import (
 // FakeClusterNodeResourcePolicies implements ClusterNodeResourcePolicyInterface
 type FakeClusterNodeResourcePolicies struct {
 	Fake *FakeSchedulingV1alpha1
-	ns   string
 }
 
 var clusternoderesourcepoliciesResource = schema.GroupVersionResource{Group: "scheduling.crane.io", Version: "v1alpha1", Resource: "clusternoderesourcepolicies"}
@@ -27,8 +26,7 @@ var clusternoderesourcepoliciesKind = schema.GroupVersionKind{Group: "scheduling
 // Get takes name of the clusterNodeResourcePolicy, and returns the corresponding clusterNodeResourcePolicy object, and an error if there is any.
 func (c *FakeClusterNodeResourcePolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(clusternoderesourcepoliciesResource, c.ns, name), &v1alpha1.ClusterNodeResourcePolicy{})
-
+		Invokes(testing.NewRootGetAction(clusternoderesourcepoliciesResource, name), &v1alpha1.ClusterNodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}
@@ -38,8 +36,7 @@ func (c *FakeClusterNodeResourcePolicies) Get(ctx context.Context, name string, 
 // List takes label and field selectors, and returns the list of ClusterNodeResourcePolicies that match those selectors.
 func (c *FakeClusterNodeResourcePolicies) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ClusterNodeResourcePolicyList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(clusternoderesourcepoliciesResource, clusternoderesourcepoliciesKind, c.ns, opts), &v1alpha1.ClusterNodeResourcePolicyList{})
-
+		Invokes(testing.NewRootListAction(clusternoderesourcepoliciesResource, clusternoderesourcepoliciesKind, opts), &v1alpha1.ClusterNodeResourcePolicyList{})
 	if obj == nil {
 		return nil, err
 	}
@@ -60,15 +57,13 @@ func (c *FakeClusterNodeResourcePolicies) List(ctx context.Context, opts v1.List
 // Watch returns a watch.Interface that watches the requested clusterNodeResourcePolicies.
 func (c *FakeClusterNodeResourcePolicies) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(clusternoderesourcepoliciesResource, c.ns, opts))
-
+		InvokesWatch(testing.NewRootWatchAction(clusternoderesourcepoliciesResource, opts))
 }
 
 // Create takes the representation of a clusterNodeResourcePolicy and creates it.  Returns the server's representation of the clusterNodeResourcePolicy, and an error, if there is any.
 func (c *FakeClusterNodeResourcePolicies) Create(ctx context.Context, clusterNodeResourcePolicy *v1alpha1.ClusterNodeResourcePolicy, opts v1.CreateOptions) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(clusternoderesourcepoliciesResource, c.ns, clusterNodeResourcePolicy), &v1alpha1.ClusterNodeResourcePolicy{})
-
+		Invokes(testing.NewRootCreateAction(clusternoderesourcepoliciesResource, clusterNodeResourcePolicy), &v1alpha1.ClusterNodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}
@@ -78,8 +73,7 @@ func (c *FakeClusterNodeResourcePolicies) Create(ctx context.Context, clusterNod
 // Update takes the representation of a clusterNodeResourcePolicy and updates it. Returns the server's representation of the clusterNodeResourcePolicy, and an error, if there is any.
 func (c *FakeClusterNodeResourcePolicies) Update(ctx context.Context, clusterNodeResourcePolicy *v1alpha1.ClusterNodeResourcePolicy, opts v1.UpdateOptions) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(clusternoderesourcepoliciesResource, c.ns, clusterNodeResourcePolicy), &v1alpha1.ClusterNodeResourcePolicy{})
-
+		Invokes(testing.NewRootUpdateAction(clusternoderesourcepoliciesResource, clusterNodeResourcePolicy), &v1alpha1.ClusterNodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}
@@ -90,8 +84,7 @@ func (c *FakeClusterNodeResourcePolicies) Update(ctx context.Context, clusterNod
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
 func (c *FakeClusterNodeResourcePolicies) UpdateStatus(ctx context.Context, clusterNodeResourcePolicy *v1alpha1.ClusterNodeResourcePolicy, opts v1.UpdateOptions) (*v1alpha1.ClusterNodeResourcePolicy, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(clusternoderesourcepoliciesResource, "status", c.ns, clusterNodeResourcePolicy), &v1alpha1.ClusterNodeResourcePolicy{})
-
+		Invokes(testing.NewRootUpdateSubresourceAction(clusternoderesourcepoliciesResource, "status", clusterNodeResourcePolicy), &v1alpha1.ClusterNodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}
@@ -101,14 +94,13 @@ func (c *FakeClusterNodeResourcePolicies) UpdateStatus(ctx context.Context, clus
 // Delete takes name of the clusterNodeResourcePolicy and deletes it. Returns an error if one occurs.
 func (c *FakeClusterNodeResourcePolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(clusternoderesourcepoliciesResource, c.ns, name), &v1alpha1.ClusterNodeResourcePolicy{})
-
+		Invokes(testing.NewRootDeleteAction(clusternoderesourcepoliciesResource, name), &v1alpha1.ClusterNodeResourcePolicy{})
 	return err
 }
 
 // DeleteCollection deletes a collection of objects.
 func (c *FakeClusterNodeResourcePolicies) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(clusternoderesourcepoliciesResource, c.ns, listOpts)
+	action := testing.NewRootDeleteCollectionAction(clusternoderesourcepoliciesResource, listOpts)
 
 	_, err := c.Fake.Invokes(action, &v1alpha1.ClusterNodeResourcePolicyList{})
 	return err
@@ -117,8 +109,7 @@ func (c *FakeClusterNodeResourcePolicies) DeleteCollection(ctx context.Context, 
 // Patch applies the patch and returns the patched clusterNodeResourcePolicy.
 func (c *FakeClusterNodeResourcePolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(clusternoderesourcepoliciesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ClusterNodeResourcePolicy{})
-
+		Invokes(testing.NewRootPatchSubresourceAction(clusternoderesourcepoliciesResource, name, pt, data, subresources...), &v1alpha1.ClusterNodeResourcePolicy{})
 	if obj == nil {
 		return nil, err
 	}

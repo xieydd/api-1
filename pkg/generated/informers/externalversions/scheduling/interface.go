@@ -3,8 +3,8 @@
 package scheduling
 
 import (
-	internalinterfaces "github.com/gocrane/api/pkg/generated/informers/externalversions/internalinterfaces"
-	v1alpha1 "github.com/gocrane/api/pkg/generated/informers/externalversions/scheduling/v1alpha1"
+	internalinterfaces "git.woa.com/crane/api/pkg/generated/informers/externalversions/internalinterfaces"
+	v1alpha1 "git.woa.com/crane/api/pkg/generated/informers/externalversions/scheduling/v1alpha1"
 )
 
 // Interface provides access to each of this group's versions.

@@ -3,7 +3,7 @@
 package v1alpha1
 
 import (
-	v1alpha1 "github.com/gocrane/api/scheduling/v1alpha1"
+	v1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/tools/cache"
@@ -15,8 +15,9 @@ type ClusterNodeResourcePolicyLister interface {
 	// List lists all ClusterNodeResourcePolicies in the indexer.
 	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1alpha1.ClusterNodeResourcePolicy, err error)
-	// ClusterNodeResourcePolicies returns an object that can list and get ClusterNodeResourcePolicies.
-	ClusterNodeResourcePolicies(namespace string) ClusterNodeResourcePolicyNamespaceLister
+	// Get retrieves the ClusterNodeResourcePolicy from the index for a given name.
+	// Objects returned here must be treated as read-only.
+	Get(name string) (*v1alpha1.ClusterNodeResourcePolicy, error)
 	ClusterNodeResourcePolicyListerExpansion
 }
 
@@ -38,41 +39,9 @@ func (s *clusterNodeResourcePolicyLister) List(selector labels.Selector) (ret []
 	return ret, err
 }
 
-// ClusterNodeResourcePolicies returns an object that can list and get ClusterNodeResourcePolicies.
-func (s *clusterNodeResourcePolicyLister) ClusterNodeResourcePolicies(namespace string) ClusterNodeResourcePolicyNamespaceLister {
-	return clusterNodeResourcePolicyNamespaceLister{indexer: s.indexer, namespace: namespace}
-}
-
-// ClusterNodeResourcePolicyNamespaceLister helps list and get ClusterNodeResourcePolicies.
-// All objects returned here must be treated as read-only.
-type ClusterNodeResourcePolicyNamespaceLister interface {
-	// List lists all ClusterNodeResourcePolicies in the indexer for a given namespace.
-	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.ClusterNodeResourcePolicy, err error)
-	// Get retrieves the ClusterNodeResourcePolicy from the indexer for a given namespace and name.
-	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1alpha1.ClusterNodeResourcePolicy, error)
-	ClusterNodeResourcePolicyNamespaceListerExpansion
-}
-
-// clusterNodeResourcePolicyNamespaceLister implements the ClusterNodeResourcePolicyNamespaceLister
-// interface.
-type clusterNodeResourcePolicyNamespaceLister struct {
-	indexer   cache.Indexer
-	namespace string
-}
-
-// List lists all ClusterNodeResourcePolicies in the indexer for a given namespace.
-func (s clusterNodeResourcePolicyNamespaceLister) List(selector labels.Selector) (ret []*v1alpha1.ClusterNodeResourcePolicy, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1alpha1.ClusterNodeResourcePolicy))
-	})
-	return ret, err
-}
-
-// Get retrieves the ClusterNodeResourcePolicy from the indexer for a given namespace and name.
-func (s clusterNodeResourcePolicyNamespaceLister) Get(name string) (*v1alpha1.ClusterNodeResourcePolicy, error) {
-	obj, exists, err := s.indexer.GetByKey(s.namespace + "/" + name)
+// Get retrieves the ClusterNodeResourcePolicy from the index for a given name.
+func (s *clusterNodeResourcePolicyLister) Get(name string) (*v1alpha1.ClusterNodeResourcePolicy, error) {
+	obj, exists, err := s.indexer.GetByKey(name)
 	if err != nil {
 		return nil, err
 	}

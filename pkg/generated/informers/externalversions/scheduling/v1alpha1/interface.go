@@ -3,7 +3,7 @@
 package v1alpha1
 
 import (
-	internalinterfaces "github.com/gocrane/api/pkg/generated/informers/externalversions/internalinterfaces"
+	internalinterfaces "git.woa.com/crane/api/pkg/generated/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to all the informers in this group version.
@@ -27,10 +27,10 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 
 // ClusterNodeResourcePolicies returns a ClusterNodeResourcePolicyInformer.
 func (v *version) ClusterNodeResourcePolicies() ClusterNodeResourcePolicyInformer {
-	return &clusterNodeResourcePolicyInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+	return &clusterNodeResourcePolicyInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
 }
 
 // NodeResourcePolicies returns a NodeResourcePolicyInformer.
 func (v *version) NodeResourcePolicies() NodeResourcePolicyInformer {
-	return &nodeResourcePolicyInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+	return &nodeResourcePolicyInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
 }

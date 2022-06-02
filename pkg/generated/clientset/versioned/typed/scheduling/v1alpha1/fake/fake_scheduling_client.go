@@ -3,7 +3,7 @@
 package fake
 
 import (
-	v1alpha1 "github.com/gocrane/api/pkg/generated/clientset/versioned/typed/scheduling/v1alpha1"
+	v1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/scheduling/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
@@ -12,12 +12,12 @@ type FakeSchedulingV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeSchedulingV1alpha1) ClusterNodeResourcePolicies(namespace string) v1alpha1.ClusterNodeResourcePolicyInterface {
-	return &FakeClusterNodeResourcePolicies{c, namespace}
+func (c *FakeSchedulingV1alpha1) ClusterNodeResourcePolicies() v1alpha1.ClusterNodeResourcePolicyInterface {
+	return &FakeClusterNodeResourcePolicies{c}
 }
 
-func (c *FakeSchedulingV1alpha1) NodeResourcePolicies(namespace string) v1alpha1.NodeResourcePolicyInterface {
-	return &FakeNodeResourcePolicies{c, namespace}
+func (c *FakeSchedulingV1alpha1) NodeResourcePolicies() v1alpha1.NodeResourcePolicyInterface {
+	return &FakeNodeResourcePolicies{c}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

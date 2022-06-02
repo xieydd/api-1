@@ -3,8 +3,8 @@
 package v1alpha1
 
 import (
-	v1alpha1 "github.com/gocrane/api/ensurance/v1alpha1"
-	"github.com/gocrane/api/pkg/generated/clientset/versioned/scheme"
+	v1alpha1 "git.woa.com/crane/api/ensurance/v1alpha1"
+	"git.woa.com/crane/api/pkg/generated/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 

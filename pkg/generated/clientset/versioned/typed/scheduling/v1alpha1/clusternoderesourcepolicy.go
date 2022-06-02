@@ -6,8 +6,8 @@ import (
 	"context"
 	"time"
 
-	scheme "github.com/gocrane/api/pkg/generated/clientset/versioned/scheme"
-	v1alpha1 "github.com/gocrane/api/scheduling/v1alpha1"
+	scheme "git.woa.com/crane/api/pkg/generated/clientset/versioned/scheme"
+	v1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
@@ -17,7 +17,7 @@ import (
 // ClusterNodeResourcePoliciesGetter has a method to return a ClusterNodeResourcePolicyInterface.
 // A group's client should implement this interface.
 type ClusterNodeResourcePoliciesGetter interface {
-	ClusterNodeResourcePolicies(namespace string) ClusterNodeResourcePolicyInterface
+	ClusterNodeResourcePolicies() ClusterNodeResourcePolicyInterface
 }
 
 // ClusterNodeResourcePolicyInterface has methods to work with ClusterNodeResourcePolicy resources.
@@ -37,14 +37,12 @@ type ClusterNodeResourcePolicyInterface interface {
 // clusterNodeResourcePolicies implements ClusterNodeResourcePolicyInterface
 type clusterNodeResourcePolicies struct {
 	client rest.Interface
-	ns     string
 }
 
 // newClusterNodeResourcePolicies returns a ClusterNodeResourcePolicies
-func newClusterNodeResourcePolicies(c *SchedulingV1alpha1Client, namespace string) *clusterNodeResourcePolicies {
+func newClusterNodeResourcePolicies(c *SchedulingV1alpha1Client) *clusterNodeResourcePolicies {
 	return &clusterNodeResourcePolicies{
 		client: c.RESTClient(),
-		ns:     namespace,
 	}
 }
 
@@ -52,7 +50,6 @@ func newClusterNodeResourcePolicies(c *SchedulingV1alpha1Client, namespace strin
 func (c *clusterNodeResourcePolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	result = &v1alpha1.ClusterNodeResourcePolicy{}
 	err = c.client.Get().
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		Name(name).
 		VersionedParams(&options, scheme.ParameterCodec).
@@ -69,7 +66,6 @@ func (c *clusterNodeResourcePolicies) List(ctx context.Context, opts v1.ListOpti
 	}
 	result = &v1alpha1.ClusterNodeResourcePolicyList{}
 	err = c.client.Get().
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
@@ -86,7 +82,6 @@ func (c *clusterNodeResourcePolicies) Watch(ctx context.Context, opts v1.ListOpt
 	}
 	opts.Watch = true
 	return c.client.Get().
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
@@ -97,7 +92,6 @@ func (c *clusterNodeResourcePolicies) Watch(ctx context.Context, opts v1.ListOpt
 func (c *clusterNodeResourcePolicies) Create(ctx context.Context, clusterNodeResourcePolicy *v1alpha1.ClusterNodeResourcePolicy, opts v1.CreateOptions) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	result = &v1alpha1.ClusterNodeResourcePolicy{}
 	err = c.client.Post().
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(clusterNodeResourcePolicy).
@@ -110,7 +104,6 @@ func (c *clusterNodeResourcePolicies) Create(ctx context.Context, clusterNodeRes
 func (c *clusterNodeResourcePolicies) Update(ctx context.Context, clusterNodeResourcePolicy *v1alpha1.ClusterNodeResourcePolicy, opts v1.UpdateOptions) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	result = &v1alpha1.ClusterNodeResourcePolicy{}
 	err = c.client.Put().
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		Name(clusterNodeResourcePolicy.Name).
 		VersionedParams(&opts, scheme.ParameterCodec).
@@ -125,7 +118,6 @@ func (c *clusterNodeResourcePolicies) Update(ctx context.Context, clusterNodeRes
 func (c *clusterNodeResourcePolicies) UpdateStatus(ctx context.Context, clusterNodeResourcePolicy *v1alpha1.ClusterNodeResourcePolicy, opts v1.UpdateOptions) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	result = &v1alpha1.ClusterNodeResourcePolicy{}
 	err = c.client.Put().
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		Name(clusterNodeResourcePolicy.Name).
 		SubResource("status").
@@ -139,7 +131,6 @@ func (c *clusterNodeResourcePolicies) UpdateStatus(ctx context.Context, clusterN
 // Delete takes name of the clusterNodeResourcePolicy and deletes it. Returns an error if one occurs.
 func (c *clusterNodeResourcePolicies) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	return c.client.Delete().
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		Name(name).
 		Body(&opts).
@@ -154,7 +145,6 @@ func (c *clusterNodeResourcePolicies) DeleteCollection(ctx context.Context, opts
 		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
 	}
 	return c.client.Delete().
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		VersionedParams(&listOpts, scheme.ParameterCodec).
 		Timeout(timeout).
@@ -167,7 +157,6 @@ func (c *clusterNodeResourcePolicies) DeleteCollection(ctx context.Context, opts
 func (c *clusterNodeResourcePolicies) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ClusterNodeResourcePolicy, err error) {
 	result = &v1alpha1.ClusterNodeResourcePolicy{}
 	err = c.client.Patch(pt).
-		Namespace(c.ns).
 		Resource("clusternoderesourcepolicies").
 		Name(name).
 		SubResource(subresources...).
