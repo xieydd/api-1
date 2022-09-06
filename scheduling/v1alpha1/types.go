@@ -7,10 +7,10 @@ import (
 )
 
 const (
-	AnnotationPrefixSchedulingExpansion = "expansion.scheduling.crane.io"
-	AnnotationPrefixSchedulingBalanceLoad = "load.balance.scheduling.crane.io"
+	AnnotationPrefixSchedulingExpansion     = "expansion.scheduling.crane.io"
+	AnnotationPrefixSchedulingBalanceLoad   = "load.balance.scheduling.crane.io"
 	AnnotationPrefixSchedulingBalanceTarget = "target.balance.scheduling.crane.io"
-
+	AnnotationPrefixSchedulingBalanceEvict  = "evict.balance.scheduling.crane.io"
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -132,12 +132,16 @@ type NodeResourcePolicySpec struct {
 	// +optional
 	AutoResourceExpansion *AutoResourceExpansion `json:"autoResourceExpansion,omitempty"`
 
+	// EvictLoadThreshold is the trigger water level utilization percent for node will evict pod
+	EvictLoadThreshold *Threshold `json:"evictLoadThreshold,omitempty"`
+
 	// TargetLoadThreshold is the target utilization percent
-	TargetLoadThreshold *TargetLoadThreshold `json:"targetLoadThreshold,omitempty"`
+	TargetLoadThreshold *Threshold `json:"targetLoadThreshold,omitempty"`
 }
 
-type TargetLoadThreshold struct {
-	// Percents is the node load threshold for each resource, such as 60, it is a percentage
+// Threshold present the node resource load threshold or evict threshold,such as 60, it is a percentage
+type Threshold struct {
+	// Percents such as ['cpu':60]
 	// +optional
 	Percents map[v1.ResourceName]int64 `json:"percents,omitempty"`
 }
@@ -205,7 +209,6 @@ type CraneSchedulerConfigurationSpec struct {
 	SchedulePolicy SchedulePolicy `json:"schedulePolicy,omitempty"`
 }
 
-
 type NamespaceSelector struct {
 	// Namespaces is applied namespaces which means all newly pods in these namespaces will use newly predicates & priorities to do scheduling
 	// if it there is no namespaces, then all newly pods will keep the original scheduling logic
@@ -214,7 +217,7 @@ type NamespaceSelector struct {
 }
 
 type PodSelector struct {
-	Namespace string `json:"namespace,omitempty"`
+	Namespace string               `json:"namespace,omitempty"`
 	Selector  metav1.LabelSelector `json:"selector,omitempty"`
 }
 
