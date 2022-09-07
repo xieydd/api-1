@@ -8,7 +8,6 @@ import (
 
 const GroupName = "analysis.crane.io"
 
-
 // SchemeGroupVersion is group version used to register these objects
 var SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: "v1alpha1"}
 

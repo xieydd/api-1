@@ -26,20 +26,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	schedulingv1alpha1.AddToScheme,
 }
 
-// AddToScheme adds all types of this clientset into the given scheme. This allows composition
-// of clientsets, like in:
-//
-//   import (
-//     "k8s.io/client-go/kubernetes"
-//     clientsetscheme "k8s.io/client-go/kubernetes/scheme"
-//     aggregatorclientsetscheme "k8s.io/kube-aggregator/pkg/client/clientset_generated/clientset/scheme"
-//   )
-//
-//   kclientset, _ := kubernetes.NewForConfig(c)
-//   _ = aggregatorclientsetscheme.AddToScheme(clientsetscheme.Scheme)
-//
-// After this, RawExtensions in Kubernetes types will serialize kube-aggregator types
-// correctly.
+
 var AddToScheme = localSchemeBuilder.AddToScheme
 
 func init() {
