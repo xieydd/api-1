@@ -8,6 +8,7 @@ import (
 	v1alpha1 "git.woa.com/crane/api/analysis/v1alpha1"
 	autoscalingv1alpha1 "git.woa.com/crane/api/autoscaling/v1alpha1"
 	ensurancev1alpha1 "git.woa.com/crane/api/ensurance/v1alpha1"
+	nodeoperationv1alpha1 "git.woa.com/crane/api/nodeoperation/v1alpha1"
 	predictionv1alpha1 "git.woa.com/crane/api/prediction/v1alpha1"
 	schedulingv1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -65,6 +66,10 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Ensurance().V1alpha1().PodQOSEnsurancePolicies().Informer()}, nil
 	case ensurancev1alpha1.SchemeGroupVersion.WithResource("servicepolicies"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Ensurance().V1alpha1().ServicePolicies().Informer()}, nil
+
+		// Group=nodeoperation.crane.io, Version=v1alpha1
+	case nodeoperationv1alpha1.SchemeGroupVersion.WithResource("nodeoperations"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Nodeoperation().V1alpha1().NodeOperations().Informer()}, nil
 
 		// Group=prediction.crane.io, Version=v1alpha1
 	case predictionv1alpha1.SchemeGroupVersion.WithResource("clusternodepredictions"):

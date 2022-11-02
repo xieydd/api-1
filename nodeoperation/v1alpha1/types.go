@@ -111,7 +111,7 @@ type NodeStatus struct {
 	// Phase means the phase of the node when do node operation.
 	Phase NodePhase `json:"phase,omitempty"`
 	// PodsStatus means the set of pods status in the node.
-	PodsStatus map[metatypes.NamespacedName]PodStatus `json:"podsStatus,omitempty"`
+	PodsStatus map[string]PodStatus `json:"podsStatus,omitempty"`
 }
 
 type PodStatus struct {

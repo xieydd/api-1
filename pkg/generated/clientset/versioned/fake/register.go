@@ -6,6 +6,7 @@ import (
 	analysisv1alpha1 "git.woa.com/crane/api/analysis/v1alpha1"
 	autoscalingv1alpha1 "git.woa.com/crane/api/autoscaling/v1alpha1"
 	ensurancev1alpha1 "git.woa.com/crane/api/ensurance/v1alpha1"
+	nodeoperationv1alpha1 "git.woa.com/crane/api/nodeoperation/v1alpha1"
 	predictionv1alpha1 "git.woa.com/crane/api/prediction/v1alpha1"
 	schedulingv1alpha1 "git.woa.com/crane/api/scheduling/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -22,10 +23,25 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	analysisv1alpha1.AddToScheme,
 	autoscalingv1alpha1.AddToScheme,
 	ensurancev1alpha1.AddToScheme,
+	nodeoperationv1alpha1.AddToScheme,
 	predictionv1alpha1.AddToScheme,
 	schedulingv1alpha1.AddToScheme,
 }
 
+// AddToScheme adds all types of this clientset into the given scheme. This allows composition
+// of clientsets, like in:
+//
+//	import (
+//	  "k8s.io/client-go/kubernetes"
+//	  clientsetscheme "k8s.io/client-go/kubernetes/scheme"
+//	  aggregatorclientsetscheme "k8s.io/kube-aggregator/pkg/client/clientset_generated/clientset/scheme"
+//	)
+//
+//	kclientset, _ := kubernetes.NewForConfig(c)
+//	_ = aggregatorclientsetscheme.AddToScheme(clientsetscheme.Scheme)
+//
+// After this, RawExtensions in Kubernetes types will serialize kube-aggregator types
+// correctly.
 var AddToScheme = localSchemeBuilder.AddToScheme
 
 func init() {

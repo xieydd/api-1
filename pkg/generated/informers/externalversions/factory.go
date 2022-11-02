@@ -12,6 +12,7 @@ import (
 	autoscaling "git.woa.com/crane/api/pkg/generated/informers/externalversions/autoscaling"
 	ensurance "git.woa.com/crane/api/pkg/generated/informers/externalversions/ensurance"
 	internalinterfaces "git.woa.com/crane/api/pkg/generated/informers/externalversions/internalinterfaces"
+	nodeoperation "git.woa.com/crane/api/pkg/generated/informers/externalversions/nodeoperation"
 	prediction "git.woa.com/crane/api/pkg/generated/informers/externalversions/prediction"
 	scheduling "git.woa.com/crane/api/pkg/generated/informers/externalversions/scheduling"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -163,6 +164,7 @@ type SharedInformerFactory interface {
 	Analysis() analysis.Interface
 	Autoscaling() autoscaling.Interface
 	Ensurance() ensurance.Interface
+	Nodeoperation() nodeoperation.Interface
 	Prediction() prediction.Interface
 	Scheduling() scheduling.Interface
 }
@@ -177,6 +179,10 @@ func (f *sharedInformerFactory) Autoscaling() autoscaling.Interface {
 
 func (f *sharedInformerFactory) Ensurance() ensurance.Interface {
 	return ensurance.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Nodeoperation() nodeoperation.Interface {
+	return nodeoperation.New(f, f.namespace, f.tweakListOptions)
 }
 
 func (f *sharedInformerFactory) Prediction() prediction.Interface {

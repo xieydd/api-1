@@ -10,6 +10,8 @@ import (
 	fakeautoscalingv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/autoscaling/v1alpha1/fake"
 	ensurancev1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/ensurance/v1alpha1"
 	fakeensurancev1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/ensurance/v1alpha1/fake"
+	nodeoperationv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/nodeoperation/v1alpha1"
+	fakenodeoperationv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/nodeoperation/v1alpha1/fake"
 	predictionv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/prediction/v1alpha1"
 	fakepredictionv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/prediction/v1alpha1/fake"
 	schedulingv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/scheduling/v1alpha1"
@@ -84,6 +86,11 @@ func (c *Clientset) AutoscalingV1alpha1() autoscalingv1alpha1.AutoscalingV1alpha
 // EnsuranceV1alpha1 retrieves the EnsuranceV1alpha1Client
 func (c *Clientset) EnsuranceV1alpha1() ensurancev1alpha1.EnsuranceV1alpha1Interface {
 	return &fakeensurancev1alpha1.FakeEnsuranceV1alpha1{Fake: &c.Fake}
+}
+
+// NodeoperationV1alpha1 retrieves the NodeoperationV1alpha1Client
+func (c *Clientset) NodeoperationV1alpha1() nodeoperationv1alpha1.NodeoperationV1alpha1Interface {
+	return &fakenodeoperationv1alpha1.FakeNodeoperationV1alpha1{Fake: &c.Fake}
 }
 
 // PredictionV1alpha1 retrieves the PredictionV1alpha1Client

@@ -16,6 +16,7 @@ controller-gen crd paths=./autoscaling/... output:crd:dir=./artifacts/deploy
 controller-gen crd paths=./ensurance/... output:crd:dir=./artifacts/deploy
 controller-gen crd paths=./analysis/... output:crd:dir=./artifacts/deploy
 controller-gen crd paths=./scheduling/... output:crd:dir=./artifacts/deploy
+controller-gen crd paths=./nodeoperation/... output:crd:dir=./artifacts/deploy
 
 
 controller-gen webhook paths=./prediction/... output:webhook:dir=./artifacts/deploy
@@ -23,4 +24,4 @@ controller-gen webhook paths=./autoscaling/... output:webhook:dir=./artifacts/de
 controller-gen webhook paths=./ensurance/... output:webhook:dir=./artifacts/deploy
 controller-gen webhook paths=./analysis/... output:webhook:dir=./artifacts/deploy
 controller-gen webhook paths=./scheduling/... output:webhook:dir=./artifacts/deploy
-
+controller-gen webhook paths=./nodeoperation/... output:webhook:dir=./artifacts/deploy

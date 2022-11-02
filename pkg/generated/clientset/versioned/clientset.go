@@ -8,6 +8,7 @@ import (
 	analysisv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/analysis/v1alpha1"
 	autoscalingv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/autoscaling/v1alpha1"
 	ensurancev1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/ensurance/v1alpha1"
+	nodeoperationv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/nodeoperation/v1alpha1"
 	predictionv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/prediction/v1alpha1"
 	schedulingv1alpha1 "git.woa.com/crane/api/pkg/generated/clientset/versioned/typed/scheduling/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
@@ -20,6 +21,7 @@ type Interface interface {
 	AnalysisV1alpha1() analysisv1alpha1.AnalysisV1alpha1Interface
 	AutoscalingV1alpha1() autoscalingv1alpha1.AutoscalingV1alpha1Interface
 	EnsuranceV1alpha1() ensurancev1alpha1.EnsuranceV1alpha1Interface
+	NodeoperationV1alpha1() nodeoperationv1alpha1.NodeoperationV1alpha1Interface
 	PredictionV1alpha1() predictionv1alpha1.PredictionV1alpha1Interface
 	SchedulingV1alpha1() schedulingv1alpha1.SchedulingV1alpha1Interface
 }
@@ -28,11 +30,12 @@ type Interface interface {
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	analysisV1alpha1    *analysisv1alpha1.AnalysisV1alpha1Client
-	autoscalingV1alpha1 *autoscalingv1alpha1.AutoscalingV1alpha1Client
-	ensuranceV1alpha1   *ensurancev1alpha1.EnsuranceV1alpha1Client
-	predictionV1alpha1  *predictionv1alpha1.PredictionV1alpha1Client
-	schedulingV1alpha1  *schedulingv1alpha1.SchedulingV1alpha1Client
+	analysisV1alpha1      *analysisv1alpha1.AnalysisV1alpha1Client
+	autoscalingV1alpha1   *autoscalingv1alpha1.AutoscalingV1alpha1Client
+	ensuranceV1alpha1     *ensurancev1alpha1.EnsuranceV1alpha1Client
+	nodeoperationV1alpha1 *nodeoperationv1alpha1.NodeoperationV1alpha1Client
+	predictionV1alpha1    *predictionv1alpha1.PredictionV1alpha1Client
+	schedulingV1alpha1    *schedulingv1alpha1.SchedulingV1alpha1Client
 }
 
 // AnalysisV1alpha1 retrieves the AnalysisV1alpha1Client
@@ -48,6 +51,11 @@ func (c *Clientset) AutoscalingV1alpha1() autoscalingv1alpha1.AutoscalingV1alpha
 // EnsuranceV1alpha1 retrieves the EnsuranceV1alpha1Client
 func (c *Clientset) EnsuranceV1alpha1() ensurancev1alpha1.EnsuranceV1alpha1Interface {
 	return c.ensuranceV1alpha1
+}
+
+// NodeoperationV1alpha1 retrieves the NodeoperationV1alpha1Client
+func (c *Clientset) NodeoperationV1alpha1() nodeoperationv1alpha1.NodeoperationV1alpha1Interface {
+	return c.nodeoperationV1alpha1
 }
 
 // PredictionV1alpha1 retrieves the PredictionV1alpha1Client
@@ -93,6 +101,10 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.nodeoperationV1alpha1, err = nodeoperationv1alpha1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.predictionV1alpha1, err = predictionv1alpha1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
@@ -116,6 +128,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 	cs.analysisV1alpha1 = analysisv1alpha1.NewForConfigOrDie(c)
 	cs.autoscalingV1alpha1 = autoscalingv1alpha1.NewForConfigOrDie(c)
 	cs.ensuranceV1alpha1 = ensurancev1alpha1.NewForConfigOrDie(c)
+	cs.nodeoperationV1alpha1 = nodeoperationv1alpha1.NewForConfigOrDie(c)
 	cs.predictionV1alpha1 = predictionv1alpha1.NewForConfigOrDie(c)
 	cs.schedulingV1alpha1 = schedulingv1alpha1.NewForConfigOrDie(c)
 
@@ -129,6 +142,7 @@ func New(c rest.Interface) *Clientset {
 	cs.analysisV1alpha1 = analysisv1alpha1.New(c)
 	cs.autoscalingV1alpha1 = autoscalingv1alpha1.New(c)
 	cs.ensuranceV1alpha1 = ensurancev1alpha1.New(c)
+	cs.nodeoperationV1alpha1 = nodeoperationv1alpha1.New(c)
 	cs.predictionV1alpha1 = predictionv1alpha1.New(c)
 	cs.schedulingV1alpha1 = schedulingv1alpha1.New(c)
 
