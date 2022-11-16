@@ -112,6 +112,8 @@ type NodeStatus struct {
 	Phase NodePhase `json:"phase,omitempty"`
 	// PodsStatus means the set of pods status in the node.
 	PodsStatus map[string]PodStatus `json:"podsStatus,omitempty"`
+	// Store labels of node.
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 type PodStatus struct {
@@ -123,6 +125,10 @@ type PodStatus struct {
 	OwnerReference metav1.OwnerReference `json:"ownerReference,omitempty"`
 	// AnalysisEvent store the result event of analysis job, example deschedulable analysis.
 	AnalysisEvent AnalysisEvent `json:"analysisEvent,omitempty"`
+	// Store labels of pod.
+	Labels map[string]string `json:"labels,omitempty"`
+	// Store annotations of pod.
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 type AnalysisEvent struct {
