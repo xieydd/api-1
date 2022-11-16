@@ -184,6 +184,11 @@ spec:
                   description: NodeStatus means before and after operation start ,
                     the status of the node.
                   properties:
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Store labels of node.
+                      type: object
                     name:
                       description: Name means the node name.
                       type: string
@@ -394,6 +399,16 @@ spec:
                                 - involvedObject
                                 - metadata
                                 type: object
+                            type: object
+                          annotations:
+                            additionalProperties:
+                              type: string
+                            description: Store annotations of pod.
+                            type: object
+                          labels:
+                            additionalProperties:
+                              type: string
+                            description: Store labels of pod.
                             type: object
                           ownerReference:
                             description: OwnerReference contains enough information
