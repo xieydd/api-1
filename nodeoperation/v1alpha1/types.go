@@ -176,3 +176,14 @@ type Notification struct {
 	// +kubebuilder:default=Info
 	Level string `json:"level,omitempty"`
 }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
+
+// NodeOperationList contains a list of NodeOperation
+type NodeOperationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata"`
+
+	Items []NodeOperation `json:"items"`
+}

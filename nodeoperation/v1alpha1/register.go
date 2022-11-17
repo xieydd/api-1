@@ -39,7 +39,9 @@ func init() {
 
 // Adds the list of known types to Scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
-	scheme.AddKnownTypes(SchemeGroupVersion) // TODO(chrisydxie) add resource and resource list
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&NodeOperation{},
+		&NodeOperationList{}) // TODO(chrisydxie) add resource and resource list
 
 	// AddToGroupVersion allows the serialization of client types like ListOptions.
 	v1.AddToGroupVersion(scheme, SchemeGroupVersion)
