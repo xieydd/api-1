@@ -84,7 +84,7 @@ type NodeOperationSpec struct {
 	NodeNames []string `json:"nodeNames,omitempty"`
 	// NodeSelector provides kubernetes origin node selector ,which will select set of nodes which will be operated.
 	// +optional
-	NodeSelector corev1.NodeSelector `json:"nodeSelector,omitempty"`
+	NodeSelector map[string]string `json:"nodeSelector,omitempty"`
 	// OperableTime set the time range of node operation.
 	// +optional
 	OperableTime OperableTime `json:"operableTime,omitempty"`
