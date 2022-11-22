@@ -1,8 +1,6 @@
 package v1alpha1
 
 import (
-	"time"
-
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	metatypes "k8s.io/apimachinery/pkg/types"
@@ -156,7 +154,7 @@ type Event struct {
 
 	// The time at which the most recent occurrence of this event was recorded.
 	// +optional
-	LastTimestamp time.Time `json:"lastTimestamp,omitempty"`
+	LastTimestamp metav1.Time `json:"lastTimestamp,omitempty"`
 }
 
 // OperableTime Operable time range

@@ -137,7 +137,8 @@ spec:
                                   lastTimestamp:
                                     description: The time at which the most recent
                                       occurrence of this event was recorded.
-                                    type: object
+                                    format: date-time
+                                    type: string
                                   message:
                                     description: 'A human-readable description of
                                       the status of this operation. TODO: decide on
