@@ -1,6 +1,8 @@
 package v1alpha1
 
 import (
+	"time"
+
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	metatypes "k8s.io/apimachinery/pkg/types"
@@ -136,7 +138,25 @@ type AnalysisEvent struct {
 	// +kubebuilder:validation:Type=string
 	AnalysisMessage string `json:"analysisMessage,omitempty"`
 	// Event is from kubernetes core api, provide useful information.
-	Event corev1.Event `json:"event,omitempty"`
+	Event Event `json:"event,omitempty"`
+}
+
+// Event from kubernetes
+type Event struct {
+	// This should be a short, machine understandable string that gives the reason
+	// for the transition into the object's current status.
+	// TODO: provide exact specification for format.
+	// +optional
+	Reason string `json:"reason,omitempty"`
+
+	// A human-readable description of the status of this operation.
+	// TODO: decide on maximum length.
+	// +optional
+	Message string `json:"message,omitempty"`
+
+	// The time at which the most recent occurrence of this event was recorded.
+	// +optional
+	LastTimestamp time.Time `json:"lastTimestamp,omitempty"`
 }
 
 // OperableTime Operable time range
