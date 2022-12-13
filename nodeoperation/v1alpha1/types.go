@@ -27,6 +27,8 @@ const (
 	NodeOfflined NodePhase = "Offlined"
 	// NodeRecycle means the node is removed from the cluster and be recycled.
 	NodeRecycled NodePhase = "Recycled"
+	// NodeConflict means the node is in other nor current work queue.
+	NodeConflict NodePhase = "Conflict"
 )
 
 const (
