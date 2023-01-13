@@ -53,6 +53,11 @@ const (
 	OperationSuccess OperationStatus = "Success"
 )
 
+const (
+	ServelessType Type = "Serveless"
+	TKEType       Type = "TKE"
+)
+
 type NodeOperationType string
 
 type NodePhase string
@@ -62,6 +67,8 @@ type AnalysisResultType string
 type OperationMode string
 
 type OperationStatus string
+
+type Type string
 
 // +genclient
 // +genclient:nonNamespaced
@@ -77,6 +84,12 @@ type NodeOperation struct {
 }
 
 type NodeOperationSpec struct {
+	// Type means the type of operating node.
+	// It can be TKE or Serveless.
+	// +optional
+	// +kubebuilder:validation:Eunm=TKE,Serveless
+	// +kubebuilder:default=Serveless
+	Type Type `json:"type,omitempty"`
 	// NodeOperation means a series of operations for specific kubernetes node.
 	// +optional
 	// +kubebuilder:validation:MinItems=1
@@ -104,6 +117,8 @@ type NodeOperationStatus struct {
 	OperationStatus OperationStatus `json:"operationStatus,omitempty"`
 	// NodesStatus is a map store erery node status information.
 	NodesStatus map[string]NodeStatus `json:"nodesStatus,omitempty"`
+	// NotificationStatus store all status in notification, for example informed.
+	NotificationStatus NotificationStatus `json:"notificationStatus,omitempty"`
 }
 
 // NodeStatus means before and after operation start , the status of the node.
@@ -194,7 +209,17 @@ type Notification struct {
 	// +optional
 	// +kubebuilder:validation:Eunm=Info,Warning
 	// +kubebuilder:default=Info
-	Level string `json:"level,omitempty"`
+	Level  string   `json:"level,omitempty"`
+	Owners []string `json:"owners,omitempty"`
+}
+
+type NotificationStatus struct {
+	// Informed means the have informed users about this node operation.
+	Informed bool `json:"informed,omitempty"`
+	// CroupCreated means the notification group have been created.
+	GroupCreated bool   `json:"groupCreated,omitempty"`
+	ChatID       string `json:"chatID,omitempty"`
+	ChatName     string `json:"chatName,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

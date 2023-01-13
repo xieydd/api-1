@@ -66,6 +66,10 @@ spec:
                     type: string
                   message:
                     type: string
+                  owners:
+                    items:
+                      type: string
+                    type: array
                 type: object
               operableTime:
                 description: OperableTime set the time range of node operation.
@@ -98,6 +102,11 @@ spec:
               operationMode:
                 default: Manual
                 description: OperationMode can be Auto or Manual.
+                type: string
+              type:
+                default: Serveless
+                description: Type means the type of operating node. It can be TKE
+                  or Serveless.
                 type: string
             type: object
           status:
@@ -209,6 +218,23 @@ spec:
                       type: object
                   type: object
                 description: NodesStatus is a map store erery node status information.
+                type: object
+              notificationStatus:
+                description: NotificationStatus store all status in notification,
+                  for example informed.
+                properties:
+                  chatID:
+                    type: string
+                  chatName:
+                    type: string
+                  groupCreated:
+                    description: CroupCreated means the notification group have been
+                      created.
+                    type: boolean
+                  informed:
+                    description: Informed means the have informed users about this
+                      node operation.
+                    type: boolean
                 type: object
               operationStatus:
                 description: OperationStatus means the current status of node operation.
